@@ -1,0 +1,11 @@
+# Ignore environment files
+.env
+
+# Ignore Python virtual environment
+venv/
+
+# Ignore all folders ending with '-app'
+*-app/
+
+# Ignore TODO files
+TODO.md
