@@ -1,5 +1,6 @@
 import os
 import click
+from gpt.ask import poser_question
 from gpt.gpt import create_graphql_schema
 from make.build import build_app
 from make.clean import clean_app
@@ -16,8 +17,7 @@ def cli():
 def create_schema(path, model):
     """Create the GraphQL schema."""
     click.echo(f"Generating GraphQL schema using model '{model}'...")
-    create_graphql_schema(prompt, path=path, model=model)
-    click.echo(f"GraphQL schema created at {path}.")
+    create_graphql_schema(path=path, model=model)
 
 @cli.command()
 @click.option('--name', required=True, type=str, help="Name of the application to build.")

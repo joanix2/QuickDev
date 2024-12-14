@@ -10,8 +10,13 @@ def clean_api_directories(sufix):
             print(f"Removing directory: {item_path}")
             subprocess.run(["rm", "-rf", item_path])
 
+def delete_schema(name = "schema.graphql"):
+    if os.path.exists(os.path.join(os.getcwd(), name)):
+        subprocess.run(["rm", name])
+
 def clean_app(sufix="-app"):
     clean_api_directories(sufix)
+    delete_schema()
 
 if __name__ == "__main__":
     clean_app()

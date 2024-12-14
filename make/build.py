@@ -14,7 +14,7 @@ def run_command(command, cwd=None):
         print(e)
 
 def init_dotenv(cwd):
-    dotenv_path = os.path.join("templates", "jinja", "dotenv.jinja")
+    dotenv_path = os.path.join("templates", "env", "dotenv.jinja")
     create_file(cwd, ".env", load_template_from_file(dotenv_path))
 
 def init_apollo(cwd):
@@ -23,8 +23,8 @@ def init_apollo(cwd):
     run_command("npm install apollo-server graphql", cwd=cwd)  # Installe Apollo Server
 
     # Chemins des templates
-    index_js_template_path = os.path.join("templates", "jinja", "index.js.jinja")
-    schema_graphql_template_path = os.path.join("templates", "jinja", "schema.graphql.jinja")
+    index_js_template_path = os.path.join("templates", "api", "index.js.jinja")
+    schema_graphql_template_path = os.path.join("templates", "api", "schema.graphql.jinja")
 
     # Charger et créer les fichiers en utilisant les fonctions utilitaires
     src_dir = os.path.join(cwd, "src")
@@ -38,7 +38,7 @@ def init_prisma(cwd):
     run_command("yes | npx prisma init", cwd=cwd)
 
     prisma_path = os.path.join(cwd, "prisma")
-    prisma_template_path = os.path.join("templates", "jinja", "prisma.jinja")
+    prisma_template_path = os.path.join("templates", "api", "prisma.jinja")
     create_file(prisma_path, "schema.prisma", load_template_from_file(prisma_template_path))
 
     run_command("npx prisma generate", cwd=cwd)
@@ -52,7 +52,6 @@ def create_apollo_server(path, name):
         os.makedirs(api_dir)
 
     init_apollo(api_dir)
-    init_dotenv(api_dir)
     init_prisma(api_dir)
 
 def create_react_server(path, name):
@@ -62,12 +61,18 @@ def create_react_server(path, name):
     if not os.path.exists(api_dir):
         os.makedirs(api_dir)
 
+def create_env(path):
+    init_dotenv(path)
+
 def build_app(name):
     # Nom du dossier principal
     app_dir = os.path.join(os.getcwd(), f"{name}-app")
 
     if not os.path.exists(app_dir):
         os.makedirs(app_dir)
+
+    # Create env
+    create_env(app_dir)
 
     # Create API
     create_apollo_server(app_dir, name)
