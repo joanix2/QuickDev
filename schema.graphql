@@ -1,0 +1,37 @@
+type Utilisateur {
+    id: ID!
+    nom: String!
+    email: String!
+    posts: [Post!]!
+}
+
+# Déclare le type Post, qui représente un post de blog et référence l'auteur ainsi que les commentaires associés
+type Post {
+    id: ID!
+    titre: String!
+    contenu: String!
+    auteur: Utilisateur!
+    commentaires: [Commentaire!]!
+}
+
+# Déclare le type Commentaire, qui représente un commentaire d'un utilisateur sur un post
+type Commentaire {
+    id: ID!
+    contenu: String!
+    auteur: Utilisateur!
+    post: Post!
+}
+
+# Déclare les requêtes possibles, actuellement nous pouvons rechercher des utilisateurs, des posts et des commentaires
+type Query {
+    utilisateurs: [Utilisateur!]!
+    posts: [Post!]!
+    commentaires: [Commentaire!]!
+}
+
+# Déclare les mutations, les actions que notre API peut effectuer, telles que la création d'utilisateurs, de posts et de commentaires
+type Mutation {
+    creerUtilisateur(nom: String!, email: String!): Utilisateur!
+    creerPost(titre: String!, contenu: String!, auteurId: ID!): Post!
+    creerCommentaire(contenu: String!, utilisateurId: ID!, postId: ID!): Commentaire!
+}

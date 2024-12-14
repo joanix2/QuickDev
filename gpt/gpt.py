@@ -85,13 +85,9 @@ def create_file(path, messages, name=None, model="gpt-4"):
         tool_calls = message.tool_calls
         if tool_calls:
             args = eval(tool_calls[0].function.arguments)
-            file_name_arg, content = args.get('file_name', "generated_file.txt"), args.get("content")
-
-            # Déterminer le nom du fichier
-            file_name = name if name else file_name_arg
 
             # Sauvegarder le contenu généré dans le fichier
-            save_generated_file(path, file_name, content)
+            save_generated_file(path, name, args.get("content"))
 
             is_created = True
 

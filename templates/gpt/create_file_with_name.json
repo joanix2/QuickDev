@@ -6,6 +6,10 @@
     "parameters": {
       "type": "object",
       "properties": {
+        "file_name": {
+          "type": "string",
+          "description": "The name of the file to be created, including its extension (e.g., schema.graphql)."
+        },
         "content": {
           "type": "string",
           "description": "The content to write into the file. This could be plain text, code, or any other text format specified by the user."
