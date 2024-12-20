@@ -2,9 +2,9 @@ import os
 import click
 from gpt.ask import poser_question
 from gpt.gpt import create_graphql_schema
-from make.build import build_app
-from make.clean import clean_app
-from make.run import run_app
+from cli.build import build_app
+from cli.clean import clean_app
+from cli.run import run_app
 
 @click.group()
 def cli():
@@ -21,6 +21,7 @@ def create_schema(path, model):
 
 @cli.command()
 @click.option('--name', required=True, type=str, help="Name of the application to build.")
+@click.option('--path', default=os.getcwd(), type=click.Path(), help="Path to save the schema (default: current directory).")
 def build(name):
     """Build the project."""
     click.echo(f"Building the project with name '{name}'...")
