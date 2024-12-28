@@ -1,0 +1,9 @@
+database:
+  type: postgres
+
+api:
+  schema: ./tests/schema.graphql
+
+front:
+  web: ./tests/web.xml
+  mobile: ./tests/mobile.xml

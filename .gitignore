@@ -11,4 +11,4 @@ venv/
 TODO.md
 
 # Ignore schema files
-*.graphql
+# *.graphql

@@ -1,5 +1,6 @@
 import os
 import click
+from compiler.parser import parse_yaml_with_checks
 from gpt.ask import poser_question
 from gpt.gpt import create_graphql_schema
 from cli.build import build_app
@@ -21,11 +22,14 @@ def create_schema(path, model):
 
 @cli.command()
 @click.option('--name', required=True, type=str, help="Name of the application to build.")
-@click.option('--path', default=os.getcwd(), type=click.Path(), help="Path to save the schema (default: current directory).")
-def build(name):
+@click.option('--config', required=True, type=click.Path(), help="Path to get the app config")
+@click.option('--path', default=os.getcwd(), type=click.Path(), help="Path to save the app (default: current directory).")
+def build(name, config, path):
     """Build the project."""
+    click.echo(f"Reading config file '{config}'...")
+    db, api, front = parse_yaml_with_checks(config)
     click.echo(f"Building the project with name '{name}'...")
-    build_app(name=name)
+    build_app(path=path, name=name, db=db, api=api, front=front)
     click.echo("Build complete.")
 
 @cli.command()
