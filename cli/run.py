@@ -1,5 +1,6 @@
 import os
-import subprocess
+from cli.command import run_command
+
 
 def get_app_dir(app_suffix) :
     # Trouver le répertoire courant qui se termine par -api
@@ -31,7 +32,7 @@ def run_api_directories(app_suffix, api_suffix):
     current_dir = get_api_dir(app_suffix, api_suffix)
     if current_dir:
         print("Starting Apollo Server...")
-        subprocess.run(["node", "src/index.js"], cwd=current_dir)
+        run_command("node src/index.js", cwd=current_dir)
     else:
         print("Current directory does not end with -api. Please navigate to the appropriate directory.")
 

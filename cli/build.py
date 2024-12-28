@@ -1,17 +1,6 @@
 import os
-import subprocess
+from cli.command import run_command
 from templates.template import *
-
-def run_command(command, cwd=None):
-    """
-    Exécute une commande shell et affiche la sortie.
-    """
-    try:
-        subprocess.run(command, shell=True, check=True, cwd=cwd)
-        print(f"Command succeeded: {command}")
-    except subprocess.CalledProcessError as e:
-        print(f"Command failed: {command}")
-        print(e)
 
 def init_dotenv(cwd):
     dotenv_path = os.path.join("templates", "env", "dotenv.jinja")
@@ -41,8 +30,8 @@ def init_prisma(cwd):
     prisma_template_path = os.path.join("templates", "api", "prisma.jinja")
     create_file(prisma_path, "schema.prisma", load_template_from_file(prisma_template_path))
 
-    run_command("npx prisma generate", cwd=cwd)
-    run_command("npx prisma migrate dev --name init", cwd=cwd)
+    run_command("yes | npx prisma generate", cwd=cwd)
+    run_command("yes | npx prisma migrate dev --name init", cwd=cwd)
 
 def create_apollo_server(path, name, schema):
     # Nom du dossier principal

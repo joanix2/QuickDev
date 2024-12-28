@@ -1,5 +1,5 @@
 import os
-import subprocess
+from cli.command import run_command
 
 def clean_api_directories(sufix):
     """Supprime tous les dossiers qui se terminent par -api dans le répertoire courant."""
@@ -8,11 +8,11 @@ def clean_api_directories(sufix):
         item_path = os.path.join(current_dir, item)
         if os.path.isdir(item_path) and item.endswith(sufix):
             print(f"Removing directory: {item_path}")
-            subprocess.run(["rm", "-rf", item_path])
+            run_command(f"rm -rf {item_path}")
 
 def delete_schema(name = "schema.graphql"):
     if os.path.exists(os.path.join(os.getcwd(), name)):
-        subprocess.run(["rm", name])
+        run_command(f"rm {name}")
 
 def clean_app(sufix="-app"):
     clean_api_directories(sufix)
