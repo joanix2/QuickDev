@@ -2,8 +2,16 @@ import os
 from cli.command import run_command
 from templates.template import *
 
-def init_dotenv(cwd):
-    dotenv_path = os.path.join("templates", "env", "dotenv.jinja")
+def init_app_dotenv(cwd):
+    dotenv_path = os.path.join("templates", "env", "app-dotenv.jinja")
+    create_file(cwd, ".env", load_template_from_file(dotenv_path))
+
+def init_api_dotenv(cwd):
+    dotenv_path = os.path.join("templates", "env", "api-dotenv.jinja")
+    create_file(cwd, ".env", load_template_from_file(dotenv_path))
+
+def init_front_dotenv(cwd):
+    dotenv_path = os.path.join("templates", "env", "front-dotenv.jinja")
     create_file(cwd, ".env", load_template_from_file(dotenv_path))
 
 def init_apollo(cwd, schema):
@@ -20,7 +28,6 @@ def init_apollo(cwd, schema):
     create_file(src_dir, "index.js", load_template_from_file(index_js_template_path))
     # create_file(src_dir, "resolvers.js", "module.exports = {};")
     create_file(src_dir, "schema.graphql", load_template_from_file(schema))
-
 
 def init_prisma(cwd):
     run_command("npm install prisma @prisma/client", cwd=cwd)
@@ -40,20 +47,27 @@ def create_apollo_server(path, name, schema):
     if not os.path.exists(api_dir):
         os.makedirs(api_dir)
 
+    # Create env
+    init_api_dotenv(api_dir)
+
     init_apollo(api_dir, schema)
     init_prisma(api_dir)
 
 def create_react_server(path, name):
     # Nom du dossier principal
-    api_dir = os.path.join(path, f"{name}-front")
+    front_dir = os.path.join(path, f"{name}-front")
 
-    if not os.path.exists(api_dir):
-        os.makedirs(api_dir)
+    if not os.path.exists(front_dir):
+        os.makedirs(front_dir)
 
+    # Create env
+    init_front_dotenv(front_dir)
+
+# Initialisation du .env README.md docker-compose
 def create_env(path):
-    init_dotenv(path)
+    init_app_dotenv(path)
 
-def build_app(path, name, db, api, front= {}):
+def build_app(path, name, db, api, front={}):
     # Nom du dossier principal
     app_dir = os.path.join(path, f"{name}-app")
 
