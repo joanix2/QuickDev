@@ -9,3 +9,6 @@ venv/
 
 # Ignore TODO files
 TODO.md
+
+# Ignore schema files
+*.graphql
