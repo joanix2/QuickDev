@@ -1,4 +1,5 @@
 import os
+from utils.command import run_command
 from utils.template import create_file, load_template_from_file
 
 def init_dotenv(cwd, env_type):
@@ -24,8 +25,11 @@ def init_app_dotenv(cwd):
     """Initialise un fichier .env pour l'environnement d'application."""
     init_dotenv(cwd, "app")
 
-def create_env(path):
+def create_env(cwd):
     """
     Crée un fichier .env dans le répertoire spécifié en utilisant le template d'application.
     """
-    init_app_dotenv(path)
+    run_command("nvm install --lts", cwd=cwd)
+    run_command("nvm use --lts", cwd=cwd)
+    
+    init_app_dotenv(cwd)

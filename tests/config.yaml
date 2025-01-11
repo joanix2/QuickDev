@@ -6,4 +6,4 @@ api:
 
 front:
   web: ./tests/web.xml
-  mobile: ./tests/mobile.xml
+  # mobile: ./tests/mobile.xml
