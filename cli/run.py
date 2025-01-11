@@ -1,5 +1,5 @@
 import os
-from cli.command import run_command
+from utils.command import run_command
 
 
 def get_app_dir(app_suffix) :

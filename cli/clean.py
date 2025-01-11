@@ -1,5 +1,5 @@
 import os
-from cli.command import run_command
+from utils.command import run_command
 
 def clean_api_directories(sufix):
     """Supprime tous les dossiers qui se terminent par -api dans le répertoire courant."""

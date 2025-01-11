@@ -3,7 +3,8 @@ import json
 from gpt.ask import poser_question
 from openai import OpenAI
 from dotenv import load_dotenv
-from templates.template import load_template_from_file
+
+from utils.template import load_template_from_file
 
 # Charger les variables d'environnement à partir du fichier .env
 load_dotenv()
@@ -71,7 +72,7 @@ def create_file(path, messages, name=None, model="gpt-4"):
         is_created = False
 
         # Charger la fonction de création de fichier depuis un template
-        template_path = os.path.join("templates", "gpt", "create_file_function.json")
+        template_path = os.path.join(os.path.dirname(__file__), "templates", "create_file_function.json")
         template = str(load_template_from_file(template_path))
         function_data = json.loads(template)
 
@@ -99,7 +100,7 @@ def create_file(path, messages, name=None, model="gpt-4"):
 
 def create_graphql_schema(path = os.getcwd(), model = "gpt-4"):
 
-    sys_prompt_path = os.path.join("templates", "gpt", "create_schema_sys_prompt.jinja")
+    sys_prompt_path = os.path.join(os.path.dirname(__file__), "templates", "create_schema_sys_prompt.jinja")
     system = load_template_from_file(sys_prompt_path)
 
     new_message = "Veuillez décrire votre application : (objets métiers et leurs interactions)"
