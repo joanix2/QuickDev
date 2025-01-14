@@ -1,4 +1,5 @@
 import os
+from Dataclass.api import Api
 from compiler.env.build import init_api_dotenv
 from utils.command import run_command
 from utils.template import create_file, load_template_from_file
@@ -16,7 +17,7 @@ def init_apollo(cwd, schema):
     src_dir = os.path.join(cwd, "src")
     create_file(src_dir, "index.js", load_template_from_file(index_js_template_path))
     # create_file(src_dir, "resolvers.js", "module.exports = {};")
-    create_file(src_dir, "schema.graphql", load_template_from_file(schema))
+    create_file(src_dir, "schema.graphql", schema)
 
 def init_prisma(cwd):
     run_command("npm install prisma @prisma/client", cwd=cwd)
@@ -29,9 +30,9 @@ def init_prisma(cwd):
     run_command("yes | npx prisma generate", cwd=cwd)
     run_command("yes | npx prisma migrate dev --name init", cwd=cwd)
 
-def create_apollo_server(path, name, schema):
+def create_apollo_server(path, api: Api):
     # Nom du dossier principal
-    api_dir = os.path.join(path, f"{name}-api")
+    api_dir = os.path.join(path, f"{api.name}-api")
 
     if not os.path.exists(api_dir):
         os.makedirs(api_dir)
@@ -39,5 +40,5 @@ def create_apollo_server(path, name, schema):
     # Create env
     init_api_dotenv(api_dir)
 
-    init_apollo(api_dir, schema)
+    init_apollo(cwd=api_dir, schema=api.compile_to_graphql())
     init_prisma(api_dir)

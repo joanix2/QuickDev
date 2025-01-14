@@ -1,0 +1,13 @@
+<api name="MyGeneratedApi">
+    <model name="User">
+        <field name="id" type="ID" primary="true" />
+        <field name="name" type="String" nullable="false" />
+        <field name="email" type="String" unique="true" />
+        <field name="age" type="Int" nullable="true" default="18" />
+    </model>
+    <model name="Product">
+        <field name="id" type="ID" primary="true" />
+        <field name="title" type="String" nullable="false" />
+        <field name="price" type="Float" nullable="false" />
+    </model>
+</api>

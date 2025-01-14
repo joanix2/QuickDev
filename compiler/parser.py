@@ -1,56 +1,39 @@
-import os
-import yaml
-import warnings
 
-DATABASE = 'database'
-API = 'api'
-FRONT = 'front'
+import xml.etree.ElementTree as ET
 
-def parse_yaml_with_checks(file_path):
+from Dataclass.api import Api
+from Dataclass.apiField import ApiField
+from Dataclass.fieldType import FieldType
+from Dataclass.model import Model
+
+def parse_xml_to_api(xml_string):
     """
-    Parse un fichier YAML, retourne un dictionnaire avec les chemins absolus
-    et génère des avertissements si des éléments sont manquants.
+    Parse un code XML pour générer une API avec des modèles et des champs.
 
-    Args:
-        file_path (str): Chemin vers le fichier YAML à parser.
-
-    Returns:
-        dict: Un dictionnaire avec les chemins absolus et les warnings si nécessaire.
+    :param xml_string: Code XML sous forme de chaîne
+    :return: Une instance d'Api
     """
-    # Charger le fichier YAML
-    try:
-        with open(file_path, 'r') as file:
-            config = yaml.safe_load(file)
-    except Exception as e:
-        raise RuntimeError(f"Erreur lors du chargement du fichier YAML : {e}")
+    root = ET.fromstring(xml_string)
+    api_name = root.attrib.get("name", "GeneratedApi")
+    api = Api(api_name)
 
-    # Clés essentielles attendues
-    required_keys = [DATABASE, API, FRONT]
+    for model_elem in root.findall("model"):
+        model_name = model_elem.attrib["name"]
+        model = Model(model_name)
 
-    # Liste des types de bases de données valides
-    valid_database_types = ['mongo', 'postgres']
-    
-    api = {}
-    front = {}
+        for field_elem in model_elem.findall("field"):
+            field_name = field_elem.attrib["name"]
+            field_type = FieldType[field_elem.attrib["type"].upper()]
+            is_nullable = field_elem.attrib.get("nullable", "false").lower() == "true"
+            is_primary_key = field_elem.attrib.get("primary", "false").lower() == "true"
+            is_unique = field_elem.attrib.get("unique", "false").lower() == "true"
+            default_value = field_elem.attrib.get("default")
 
-    # Vérification et conversion en chemins absolus
-    for key in required_keys:
-        if key not in config:
-            warnings.warn(f"Clé manquante dans le fichier YAML : {key}")
-        else:
-            if key == DATABASE:
-                db_type = config[DATABASE].get('type', 'inconnu')
-                if db_type not in valid_database_types:
-                    raise ValueError(f"Type de base de données invalide ou inconnu : {db_type}. Types valides : {valid_database_types}")
-                db = db_type
-            elif key == API:
-                schema_path = config[API].get('schema')
-                if schema_path:
-                    api = os.path.abspath(schema_path)
-                else:
-                    warnings.warn("Clé 'schema' manquante sous 'api'")
-            elif key == FRONT:
-                for sub_key, sub_value in config[FRONT].items():
-                    front[sub_key] = os.path.abspath(sub_value)
+            field = ApiField(
+                field_name, field_type, is_nullable, is_primary_key, is_unique, default_value
+            )
+            model.add_field(field)
 
-    return db , api , front
+        api.add_model(model)
+
+    return api

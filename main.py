@@ -1,16 +1,25 @@
 import os
 import click
-from compiler.parser import parse_yaml_with_checks
-from gpt.ask import poser_question
+from cli.init import init_app
+from compiler.parser import parse_xml_to_api
 from gpt.gpt import create_graphql_schema
 from cli.build import build_app
 from cli.clean import clean_app
 from cli.run import run_app
+from utils.template import load_file
 
 @click.group()
 def cli():
     """Simple CLI for project management."""
     pass
+
+@cli.command()
+def init():
+    """
+    Create init file
+    """
+    click.echo("creating new project")
+    init_app()
 
 @cli.command()
 @click.option('--path', default=os.getcwd(), type=click.Path(), help="Path to save the schema (default: current directory).")
@@ -21,15 +30,14 @@ def create_schema(path, model):
     create_graphql_schema(path=path, model=model)
 
 @cli.command()
-@click.option('--name', required=True, type=str, help="Name of the application to build.")
-@click.option('--config', required=True, type=click.Path(), help="Path to get the app config")
-@click.option('--path', default=os.getcwd(), type=click.Path(), help="Path to save the app (default: current directory).")
-def build(name, config, path):
+@click.option('--input', required=True, type=click.Path(), help="Input dsl file")
+@click.option('--output', default=os.getcwd(), type=click.Path(), help="Path to save the app (default: current directory).")
+def build(input, output):
     """Build the project."""
-    click.echo(f"Reading config file '{config}'...")
-    db, api, front = parse_yaml_with_checks(config)
-    click.echo(f"Building the project with name '{name}'...")
-    build_app(path=path, name=name, db=db, api=api, front=front)
+    click.echo(f"Reading config file '{input}'...")
+    api = parse_xml_to_api(load_file(input))
+    click.echo(f"Building the project with name '{api.name}'...")
+    build_app(path=output, api=api)
     click.echo("Build complete.")
 
 @cli.command()
