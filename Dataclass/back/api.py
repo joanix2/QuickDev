@@ -1,9 +1,9 @@
 
-from Dataclass.compilable import Compilable
-from Dataclass.model import Model
+from Dataclass.back.apiCompilable import ApiCompilable
+from Dataclass.back.model import Model
 
 
-class Api(Compilable):
+class Api(ApiCompilable):
     """
     Représente une API contenant un nom et une liste de modèles.
     """

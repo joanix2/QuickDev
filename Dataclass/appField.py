@@ -1,9 +1,9 @@
-from Dataclass.compilable import Compilable
+from Dataclass.back.apiCompilable import ApiCompilable
 from Dataclass.fieldType import FieldType
 
 
 
-class ApiField(Compilable):
+class ApiField(ApiCompilable):
     """
     Représente un champ d'un modèle, compilable en Prisma et GraphQL.
     """

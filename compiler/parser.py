@@ -1,10 +1,10 @@
 
 import xml.etree.ElementTree as ET
 
-from Dataclass.api import Api
-from Dataclass.apiField import ApiField
+from Dataclass.back.api import Api
+from Dataclass.appField import ApiField
 from Dataclass.fieldType import FieldType
-from Dataclass.model import Model
+from Dataclass.back.model import Model
 
 def parse_xml_to_api(xml_string):
     """
