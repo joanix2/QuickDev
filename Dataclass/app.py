@@ -6,7 +6,8 @@ class App:
     Représente une application contenant une API et un composant front.
     """
 
-    def __init__(self, api, front):
+    def __init__(self, name, api, front):
+        self.name = name
         if not isinstance(api, Api):
             raise TypeError("L'API doit être une instance de Api.")
         if not isinstance(front, Front):

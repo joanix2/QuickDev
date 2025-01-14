@@ -1,7 +1,7 @@
 import os
 import click
 from cli.init import init_app
-from compiler.parser import parse_xml_to_api
+from compiler.parser import parse_xml_to_app
 from gpt.gpt import create_graphql_schema
 from cli.build import build_app
 from cli.clean import clean_app
@@ -35,9 +35,9 @@ def create_schema(path, model):
 def build(input, output):
     """Build the project."""
     click.echo(f"Reading config file '{input}'...")
-    api = parse_xml_to_api(load_file(input))
-    click.echo(f"Building the project with name '{api.name}'...")
-    build_app(path=output, api=api)
+    app = parse_xml_to_app(load_file(input))
+    click.echo(f"Building the project with name '{app.name}'...")
+    build_app(path=output, app=app)
     click.echo("Build complete.")
 
 @cli.command()

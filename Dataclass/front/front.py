@@ -7,10 +7,11 @@ class Front(FrontCompilable):
     Représente un composant front contenant une liste de pages.
     """
 
-    def __init__(self):
-        self.pages = []
+    def __init__(self, name, pages = []):
+        self.name = name
+        self.pages = pages
 
-    def add_page(self, page):
+    def add_page(self, page : Page):
         if not isinstance(page, Page):
             raise TypeError("La page doit être une instance de Page.")
         self.pages.append(page)

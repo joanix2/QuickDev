@@ -1,11 +1,12 @@
 import os
+from Dataclass.front.front import Front
 from compiler.env.build import init_front_dotenv
 from utils.command import run_command
 
 
-def create_react_server(path, name):
+def create_react_server(path, front : Front):
     # Définition du chemin du dossier principal du projet frontend
-    front_dir = os.path.join(path, f"{name}-front")
+    front_dir = os.path.join(path, f"{front.name}-front")
 
     # Création du répertoire s'il n'existe pas
     if not os.path.exists(front_dir):
