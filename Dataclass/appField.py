@@ -19,16 +19,16 @@ class ApiField(ApiCompilable):
         self.default_value = default_value
 
     def compile_to_prisma(self):
-        prisma_parts = [f"{self.name} {self.field_type.compile_to_prisma()}"]
-        if self.is_primary_key:
-            prisma_parts.append("@id")
-        if self.is_unique:
-            prisma_parts.append("@unique")
+        prisma_parts = [f"\t{self.name} {self.field_type.compile_to_prisma()}"]
         if self.is_nullable:
             prisma_parts.append("?")
+        if self.is_primary_key:
+            prisma_parts.append(" @id")
+        if self.is_unique:
+            prisma_parts.append(" @unique")
         if self.default_value is not None:
-            prisma_parts.append(f"@default({self.default_value})")
-        return " ".join(prisma_parts)
+            prisma_parts.append(f" @default({self.default_value})")
+        return "".join(prisma_parts)
 
     def compile_to_graphql(self):
         graphql_type = self.field_type.compile_to_graphql()
@@ -36,4 +36,4 @@ class ApiField(ApiCompilable):
             graphql_type = f"{graphql_type}"
         else:
             graphql_type = f"{graphql_type}!"
-        return f"{self.name}: {graphql_type}"
+        return f"\t{self.name}: {graphql_type}"

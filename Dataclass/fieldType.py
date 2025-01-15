@@ -11,7 +11,11 @@ class FieldType(Enum):
     ID = "ID"
 
     def compile_to_prisma(self):
-        return self.value
+        match self.value:
+            case FieldType.ID.value:
+                return self.INT.value
+            case _:
+                return self.value
 
     def compile_to_graphql(self):
         return self.value

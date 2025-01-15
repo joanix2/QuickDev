@@ -22,5 +22,39 @@ class Api(ApiCompilable):
         return f"// API: {self.name}\n\n{prisma_models}"
 
     def compile_to_graphql(self):
+        # Générer les types des modèles
         graphql_models = "\n\n".join([model.compile_to_graphql() for model in self.models])
-        return f"# API: {self.name}\n\n{graphql_models}"
+
+        # Générer les queries et mutations
+        graphql_queries = self._generate_queries()
+        graphql_mutations = self._generate_mutations()
+
+        return (
+            f"# API: {self.name}\n\n"
+            f"{graphql_models}\n\n"
+            f"type Query {{\n{graphql_queries}\n}}\n\n"
+            f"type Mutation {{\n{graphql_mutations}\n}}"
+        )
+
+    def _generate_queries(self):
+        """
+        Génère les queries pour tous les modèles.
+        """
+        queries = []
+        for model in self.models:
+            # Générer les requêtes de base pour chaque modèle
+            queries.append(f"\tget{model.name}ById(id: ID!): {model.name}")
+            queries.append(f"\tlist{model.name}s: [{model.name}]")
+        return "\n".join(queries)
+
+    def _generate_mutations(self):
+        """
+        Génère les mutations pour tous les modèles.
+        """
+        mutations = []
+        for model in self.models:
+            # Générer les mutations de base pour chaque modèle
+            mutations.append(f"\tcreate{model.name}(input: {model.name}!): {model.name}")
+            mutations.append(f"\tupdate{model.name}(id: ID!, input: {model.name}!): {model.name}")
+            mutations.append(f"\tdelete{model.name}(id: ID!): Boolean")
+        return "\n".join(mutations)
