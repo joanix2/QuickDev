@@ -19,13 +19,13 @@ def init_apollo(cwd, schema):
     # create_file(src_dir, "resolvers.js", "module.exports = {};")
     create_file(src_dir, "schema.graphql", schema)
 
-def init_prisma(cwd):
+def init_prisma(cwd, api: Api):
     run_command("npm install prisma @prisma/client", cwd=cwd)
     run_command("yes | npx prisma init", cwd=cwd)
 
     prisma_path = os.path.join(cwd, "prisma")
     prisma_template_path = os.path.join(os.path.dirname(__file__), "templates", "prisma.jinja")
-    create_file(prisma_path, "schema.prisma", load_template_from_file(prisma_template_path))
+    create_file(prisma_path, "schema.prisma", load_template_from_file(template_path=prisma_template_path, api=api))
 
     run_command("yes | npx prisma generate", cwd=cwd)
     run_command("yes | npx prisma migrate dev --name init", cwd=cwd)
@@ -41,4 +41,4 @@ def create_apollo_server(path, api: Api):
     init_api_dotenv(api_dir)
 
     init_apollo(cwd=api_dir, schema=api.compile_to_graphql())
-    init_prisma(api_dir)
+    init_prisma(cwd=api_dir, api=api)

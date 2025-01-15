@@ -19,7 +19,7 @@ def load_file(file_path):
     except IOError as e:
         raise IOError(f"Une erreur s'est produite lors de la lecture du fichier : {e}")
 
-def load_template_from_file(template_path, params=None):
+def load_template_from_file(template_path, **params):
     """Charge un template à partir d'un fichier et remplace les variables avec les paramètres donnés."""
     params = params or {}
     with open(template_path, 'r') as file:
