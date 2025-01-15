@@ -4,11 +4,13 @@ from Dataclass.back.api import Api
 from compiler.env.build import create_env
 from compiler.api.apollo.build import create_apollo_server
 from compiler.front.react.build import create_react_server
+from utils.format_text import to_snake_case
 
 
 def build_app(path, app: App):
     # Nom du dossier principal
-    app_dir = os.path.join(path, f"{app.name}-app")
+    app_snake_case_name = to_snake_case(app.name)
+    app_dir = os.path.join(path, app_snake_case_name)
 
     if not os.path.exists(app_dir):
         os.makedirs(app_dir)

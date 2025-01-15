@@ -14,7 +14,7 @@ def delete_schema(name = "schema.graphql"):
     if os.path.exists(os.path.join(os.getcwd(), name)):
         run_command(f"rm {name}")
 
-def clean_app(sufix="-app"):
+def clean_app(sufix="_app"):
     clean_api_directories(sufix)
     delete_schema()
 

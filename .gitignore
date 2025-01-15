@@ -5,7 +5,7 @@
 venv/
 
 # Ignore all folders ending with '-app'
-*-app/
+*_app/
 
 # Ignore TODO files
 TODO.md
