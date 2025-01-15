@@ -2,7 +2,16 @@ import os
 from Dataclass.back.api import Api
 from compiler.env.build import init_api_dotenv
 from utils.command import run_command
+from utils.format_text import to_snake_case
+from utils.json_dict import JsonDict
 from utils.template import create_file, load_template_from_file
+
+def updatePackageJson(cwd):
+    path = os.path.join(cwd, "package.json")
+    package_json = JsonDict(path)
+    package_json["scripts"] = {
+        "start": "node src/index.js",
+    }
 
 def init_apollo(cwd, schema):
     # Initialisation du projet Node.js
@@ -19,6 +28,8 @@ def init_apollo(cwd, schema):
     # create_file(src_dir, "resolvers.js", "module.exports = {};")
     create_file(src_dir, "schema.graphql", schema)
 
+    updatePackageJson(cwd)
+
 def init_prisma(cwd, api: Api):
     run_command("npm install prisma @prisma/client", cwd=cwd)
     run_command("yes | npx prisma init", cwd=cwd)
@@ -32,7 +43,8 @@ def init_prisma(cwd, api: Api):
 
 def create_apollo_server(path, api: Api):
     # Nom du dossier principal
-    api_dir = os.path.join(path, f"{api.name}-api")
+    api_snake_case_name = to_snake_case(api.name)
+    api_dir = os.path.join(path, api_snake_case_name)
 
     if not os.path.exists(api_dir):
         os.makedirs(api_dir)
