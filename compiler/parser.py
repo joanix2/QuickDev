@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from Dataclass.app import App
 from Dataclass.back.api import Api
 from Dataclass.appField import ApiField
-from Dataclass.fieldType import FieldType
+from Dataclass.type import parse_graphql_type
 from Dataclass.back.model import Model
 from Dataclass.front.front import Front
 from Dataclass.front.page import Page
@@ -24,7 +24,7 @@ def parse_fields(model_elem):
     fields = []
     for field_elem in model_elem.findall("field"):
         field_name = field_elem.attrib["name"]
-        field_type = FieldType[field_elem.attrib["type"].upper()]
+        field_type = parse_graphql_type(field_elem.attrib["type"])
         is_nullable = field_elem.attrib.get("nullable", "false").lower() == "true"
         is_primary_key = field_elem.attrib.get("primary", "false").lower() == "true"
         is_unique = field_elem.attrib.get("unique", "false").lower() == "true"

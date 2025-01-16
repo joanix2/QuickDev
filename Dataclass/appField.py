@@ -1,5 +1,5 @@
 from Dataclass.back.apiCompilable import ApiCompilable
-from Dataclass.fieldType import FieldType
+from Dataclass.type import BaseType
 
 
 
@@ -9,8 +9,8 @@ class ApiField(ApiCompilable):
     """
 
     def __init__(self, name, field_type, is_nullable=False, is_primary_key=False, is_unique=False, default_value=None):
-        if not isinstance(field_type, FieldType):
-            raise TypeError("Le type du champ doit être une instance de FieldType.")
+        if not isinstance(field_type, BaseType):
+            raise TypeError("Le type du champ doit être une instance de BaseType.")
         self.name = name
         self.field_type = field_type
         self.is_nullable = is_nullable

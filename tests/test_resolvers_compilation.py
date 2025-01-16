@@ -38,7 +38,7 @@ class TestResolversCompilation(unittest.TestCase):
                 compiled_resolver_from_model = model.compile_to_prisma_resolver().strip()
 
                 # Générer le chemin du fichier attendu
-                target_file = os.path.join(resolvers_path, f"{model.name}.graphql")
+                target_file = os.path.join(resolvers_path, f"{model.name}.js")
 
                 # Charger le resolver attendu depuis le fichier correspondant
                 if not os.path.isfile(target_file):

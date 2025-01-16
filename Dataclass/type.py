@@ -1,7 +1,4 @@
 from enum import Enum
-from Dataclass.back.model import Model
-import re
-
 
 class FieldType(Enum):
     """
@@ -32,7 +29,8 @@ class PrimitiveType(BaseType):
     """
     Représente un type primitif comme String, Int, etc.
     """
-    def __init__(self, field_type: FieldType):
+    def __init__(self, field_type: FieldType, nullable: bool = True):
+        super().__init__(nullable)
         self.field_type = field_type
 
     def compile_to_graphql(self):
@@ -41,25 +39,26 @@ class PrimitiveType(BaseType):
     def compile_to_prisma(self):
         return self.field_type.value
 
-
 class ModelType(BaseType):
     """
     Représente un type qui fait référence à un modèle.
     """
-    def __init__(self, model: Model):
-        self.model = model
+    def __init__(self, model_name: str, nullable: bool = True):
+        super().__init__(nullable)
+        self.model_name = model_name
 
     def compile_to_graphql(self):
-        return self.model.name
+        return self.model_name
 
     def compile_to_prisma(self):
-        return self.model.name
+        return self.model_name
 
 class ListType(BaseType):
     """
     Représente un type liste.
     """
-    def __init__(self, inner_type: BaseType):
+    def __init__(self, inner_type: BaseType, nullable: bool = True):
+        super().__init__(nullable)
         self.inner_type = inner_type
 
     def compile_to_graphql(self):
