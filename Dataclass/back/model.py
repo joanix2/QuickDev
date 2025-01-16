@@ -19,6 +19,9 @@ class Model(ApiCompilable):
     def compile_to_prisma(self):
         prisma_fields = "\n".join([field.compile_to_prisma() for field in self.fields])
         return f"model {self.name} {{\n{prisma_fields}\n}}"
+    
+    def compile_to_prisma_resolver(self):
+        return "function"
 
     def compile_to_graphql(self):
         graphql_fields = "\n".join([field.compile_to_graphql() for field in self.fields])
