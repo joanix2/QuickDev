@@ -4,12 +4,13 @@
             <field name="id" type="ID" primary="true" />
             <field name="name" type="String" nullable="false" />
             <field name="email" type="String" unique="true" />
-            <field name="age" type="Int" nullable="true" default="18" />
+            <field name="links" type="[Link!]!" nullable="true" default="18" />
         </model>
-        <model name="Product">
+        <model name="Link">
             <field name="id" type="ID" primary="true" />
-            <field name="title" type="String" nullable="false" />
-            <field name="price" type="Float" nullable="false" />
+            <field name="description" type="String!" nullable="false" />
+            <field name="url" type="String!" nullable="false" />
+            <field name="postedBy" type="User" nullable="false" />
         </model>
     </api>
     <front name="MyGeneratedFront">

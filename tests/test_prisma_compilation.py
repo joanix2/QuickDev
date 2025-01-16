@@ -28,7 +28,7 @@ class TestPrisma(unittest.TestCase):
             
             # Log des schémas pour débogage en cas d'échec
             print("Compiled GraphQL Schema:\n", compiled_graphql_schema)
-            print("Expected GraphQL Schema:\n", expected_graphql_schema)
+            # print("Expected GraphQL Schema:\n", expected_graphql_schema)
 
             # Vérification de l'égalité entre le schéma compilé et celui attendu
             self.assertEqual(compiled_graphql_schema, expected_graphql_schema)
@@ -36,6 +36,6 @@ class TestPrisma(unittest.TestCase):
             self.fail(f"Fichier manquant : {e}")
         except Exception as e:
             self.fail(f"Erreur inattendue pendant le test : {e}")
-            
+
 if __name__ == "__main__":
     unittest.main()
